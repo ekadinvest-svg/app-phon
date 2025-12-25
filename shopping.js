@@ -53,9 +53,32 @@ function renderList() {
     list.innerHTML = shoppingItems.map((item, index) => `
         <li class="${item.completed ? 'completed' : ''}">
             <span class="item-text" onclick="toggleItem(${index})">${item.text}</span>
+            <div class="quantity-control">
+                <button class="qty-btn" onclick="decreaseQty(event, ${index})">-</button>
+                <span class="qty-value">${item.qty || 1}</span>
+                <button class="qty-btn" onclick="increaseQty(event, ${index})">+</button>
+            </div>
             <button class="delete-btn" onclick="deleteItem(${index})">🗑️</button>
         </li>
     `).join('');
+}
+
+function increaseQty(e, index) {
+    e.stopPropagation();
+    if (!shoppingItems[index].qty) shoppingItems[index].qty = 1;
+    shoppingItems[index].qty++;
+    saveItems();
+    renderList();
+}
+
+function decreaseQty(e, index) {
+    e.stopPropagation();
+    if (!shoppingItems[index].qty) shoppingItems[index].qty = 1;
+    if (shoppingItems[index].qty > 1) {
+        shoppingItems[index].qty--;
+        saveItems();
+        renderList();
+    }
 }
 
 // הוספת מוצר
@@ -64,7 +87,7 @@ function addItem() {
     const text = input.value.trim();
     
     if (text) {
-        shoppingItems.push({ text, completed: false });
+        shoppingItems.push({ text, completed: false, qty: 1 });
         addToHistory(text);
         input.value = '';
         hideSuggestions();

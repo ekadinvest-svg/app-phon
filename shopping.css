@@ -202,7 +202,47 @@
     font-size: 1.1em;
 }
 
-/* מובייל - מסכים קטנים */
+.quantity-control {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0 10px;
+    background: #f1f3f6;
+    border-radius: 8px;
+    padding: 4px 8px;
+    min-width: 70px;
+    justify-content: center;
+}
+
+.qty-btn {
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    width: 28px;
+    height: 28px;
+    font-size: 1.2em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.qty-btn:active {
+    background: #4a56a6;
+}
+
+.qty-value {
+    min-width: 18px;
+    text-align: center;
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #333;
+}
+
 @media (max-width: 480px) {
     .add-item {
         gap: 6px;
@@ -241,6 +281,20 @@
     
     .empty-message {
         padding: 25px 10px;
+        font-size: 1em;
+    }
+    
+    .quantity-control {
+        min-width: 60px;
+        padding: 2px 4px;
+        gap: 4px;
+    }
+    .qty-btn {
+        width: 24px;
+        height: 24px;
+        font-size: 1em;
+    }
+    .qty-value {
         font-size: 1em;
     }
 }
