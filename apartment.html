@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#667eea">
+    <title>ניהול דירה</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="apartment.css">
+</head>
+<body>
+    <!-- תפריט המבורגר -->
+    <div class="hamburger-menu" onclick="toggleMenu()">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+    <!-- כפתור סגירה -->
+    <div class="close-page-btn" onclick="closePage()">✕</div>
+    <div class="container">
+        <h1>🏠 דירה</h1>
+        <div class="add-apartment-item">
+            <input type="text" id="apartmentItemInput" placeholder="הוסף הוצאה (למשל: שכירות)" autocomplete="off" />
+            <input type="number" id="apartmentPriceInput" placeholder="מחיר (₪)" min="0" />
+            <button id="addApartmentBtn" class="btn">הוסף</button>
+        </div>
+        <ul id="apartmentList" class="apartment-list">
+            <!-- הפריטים יופיעו כאן -->
+        </ul>
+    </div>
+    <script src="apartment.js"></script>
+    <script src="menu.js"></script>
+    <script>
+        function closePage() {
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

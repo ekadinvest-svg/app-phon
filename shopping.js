@@ -76,8 +76,10 @@ function decreaseQty(e, index) {
     if (shoppingItems[index].qty > 1) {
         shoppingItems[index].qty--;
     } else {
-        // אם הכמות יורדת לאפס - מחיקה
-        shoppingItems.splice(index, 1);
+        // אם הכמות יורדת לאפס - בקשת אישור למחיקה
+        if (confirm('האם אתה בטוח שברצונך להסיר את הפריט מהרשימה?')) {
+            shoppingItems.splice(index, 1);
+        }
     }
     saveItems();
     renderList();

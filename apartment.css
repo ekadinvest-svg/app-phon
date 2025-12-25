@@ -1,0 +1,72 @@
+/* עיצוב מסך דירה */
+.add-apartment-item {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 25px;
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#apartmentItemInput, #apartmentPriceInput {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+    -webkit-appearance: none;
+    appearance: none;
+    box-sizing: border-box;
+}
+
+#apartmentPriceInput {
+    max-width: 110px;
+    direction: ltr;
+    text-align: left;
+}
+
+#addApartmentBtn {
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding: 16px 22px;
+    font-size: 1.1em;
+    border-radius: 10px;
+    box-sizing: border-box;
+    height: 100%;
+    margin: 0;
+}
+
+.apartment-list {
+    list-style: none;
+    margin: 20px 0;
+    padding: 0;
+}
+
+.apartment-list li {
+    background: #f8f9fa;
+    padding: 16px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1em;
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.08);
+}
+
+.apartment-list .item-name {
+    flex: 1;
+    text-align: right;
+    font-weight: bold;
+}
+
+.apartment-list .item-price {
+    color: #667eea;
+    font-weight: bold;
+    margin-right: 15px;
+    min-width: 70px;
+    text-align: left;
+    direction: ltr;
+}
