@@ -1,7 +1,8 @@
 .add-item {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     margin-bottom: 25px;
+    position: relative;
 }
 
 #itemInput {
@@ -18,6 +19,58 @@
 #itemInput:focus {
     outline: none;
     border-color: #667eea;
+}
+
+#addBtn {
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.suggestions {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    background: white;
+    border: 2px solid #667eea;
+    border-radius: 10px;
+    margin-top: 5px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    display: none;
+}
+
+.suggestions.active {
+    display: block;
+}
+
+.suggestion-item {
+    padding: 12px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+    text-align: right;
+    transition: background 0.2s;
+}
+
+.suggestion-item:last-child {
+    border-bottom: none;
+}
+
+.suggestion-item:active {
+    background: #f8f9fa;
+}
+
+.suggestion-item .suggestion-text {
+    font-size: 1em;
+    color: #333;
+}
+
+.suggestion-item .suggestion-count {
+    font-size: 0.85em;
+    color: #999;
+    margin-right: 8px;
 }
 
 .shopping-list {
@@ -96,12 +149,17 @@
 /* מובייל - מסכים קטנים */
 @media (max-width: 480px) {
     .add-item {
-        gap: 8px;
+        gap: 6px;
     }
     
     #itemInput {
-        padding: 14px;
+        padding: 14px 12px;
         font-size: 16px;
+    }
+    
+    #addBtn {
+        padding: 14px 20px !important;
+        font-size: 1em !important;
     }
     
     .shopping-list {
