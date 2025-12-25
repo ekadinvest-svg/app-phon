@@ -1,0 +1,83 @@
+.add-item {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+#itemInput {
+    flex: 1;
+    padding: 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 1.1em;
+    transition: border-color 0.3s;
+}
+
+#itemInput:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.shopping-list {
+    list-style: none;
+    margin: 20px 0;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.shopping-list li {
+    background: #f8f9fa;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s;
+}
+
+.shopping-list li:hover {
+    background: #e9ecef;
+}
+
+.shopping-list li.completed {
+    opacity: 0.6;
+    text-decoration: line-through;
+}
+
+.item-text {
+    flex: 1;
+    text-align: right;
+    font-size: 1.1em;
+    cursor: pointer;
+}
+
+.delete-btn {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.delete-btn:hover {
+    background: #c82333;
+}
+
+.btn-secondary {
+    background: #6c757d;
+    box-shadow: 0 4px 15px rgba(108, 117, 125, 0.4);
+}
+
+.btn-secondary:hover {
+    box-shadow: 0 6px 20px rgba(108, 117, 125, 0.6);
+}
+
+.empty-message {
+    text-align: center;
+    color: #999;
+    padding: 40px;
+    font-size: 1.1em;
+}
