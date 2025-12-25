@@ -100,9 +100,8 @@ function showSuggestions(query) {
     }
     
     suggestionsDiv.innerHTML = matches.map(([key, data]) => `
-        <div class="suggestion-item" onclick="selectSuggestion('${data.text.replace(/'/g, "\\'")}')">>
+        <div class="suggestion-item" onclick="selectSuggestion('${data.text.replace(/'/g, "\\'")}')">
             <span class="suggestion-text">${data.text}</span>
-
         </div>
     `).join('');
     
@@ -120,7 +119,7 @@ function selectSuggestion(text) {
     const input = document.getElementById('itemInput');
     input.value = text;
     hideSuggestions();
-    input.focus();
+    addItem(); // הוספה אוטומטית לרשימה
 }
 
 // סימון מוצר כקנוי
