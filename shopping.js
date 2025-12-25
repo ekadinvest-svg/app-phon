@@ -58,7 +58,6 @@ function renderList() {
                 <span class="qty-value">${item.qty || 1}</span>
                 <button class="qty-btn" onclick="increaseQty(event, ${index})">+</button>
             </div>
-            <button class="delete-btn" onclick="deleteItem(${index})">🗑️</button>
         </li>
     `).join('');
 }
@@ -76,9 +75,12 @@ function decreaseQty(e, index) {
     if (!shoppingItems[index].qty) shoppingItems[index].qty = 1;
     if (shoppingItems[index].qty > 1) {
         shoppingItems[index].qty--;
-        saveItems();
-        renderList();
+    } else {
+        // אם הכמות יורדת לאפס - מחיקה
+        shoppingItems.splice(index, 1);
     }
+    saveItems();
+    renderList();
 }
 
 // הוספת מוצר
