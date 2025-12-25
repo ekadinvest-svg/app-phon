@@ -3,6 +3,8 @@
     gap: 8px;
     margin-bottom: 25px;
     position: relative;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* כפתור סגירת עמוד */
@@ -33,7 +35,8 @@
 }
 
 #itemInput {
-    flex: 1;
+    flex: 1 1 0;
+    min-width: 0;
     padding: 16px;
     border: 2px solid #e0e0e0;
     border-radius: 10px;
@@ -41,6 +44,7 @@
     transition: border-color 0.3s;
     -webkit-appearance: none;
     appearance: none;
+    box-sizing: border-box;
 }
 
 #itemInput:focus {
@@ -51,6 +55,12 @@
 #addBtn {
     white-space: nowrap;
     flex-shrink: 0;
+    padding: 16px 22px;
+    font-size: 1.1em;
+    border-radius: 10px;
+    box-sizing: border-box;
+    height: 100%;
+    margin: 0;
 }
 
 .suggestions {
@@ -196,16 +206,19 @@
 @media (max-width: 480px) {
     .add-item {
         gap: 6px;
+        width: 100%;
     }
     
     #itemInput {
-        padding: 14px 12px;
+        padding: 14px 10px;
         font-size: 16px;
     }
     
     #addBtn {
-        padding: 14px 20px !important;
-        font-size: 1em !important;
+        padding: 14px 12px;
+        font-size: 1em;
+        border-radius: 10px;
+        height: 100%;
     }
     
     .shopping-list {
