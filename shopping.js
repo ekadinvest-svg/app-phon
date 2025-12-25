@@ -136,8 +136,19 @@ function deleteItem(index) {
     renderList();
 }
 
+// ריקון כל הרשימה
+function clearList() {
+    if (shoppingItems.length === 0) return;
+    if (confirm('האם אתה בטוח שברצונך לרוקן את כל רשימת הקניות?')) {
+        shoppingItems = [];
+        saveItems();
+        renderList();
+    }
+}
+
 // אירועים
 document.getElementById('addBtn').addEventListener('click', addItem);
+document.getElementById('clearListBtn').addEventListener('click', clearList);
 
 const itemInput = document.getElementById('itemInput');
 

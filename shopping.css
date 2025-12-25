@@ -166,6 +166,25 @@
     box-shadow: 0 2px 8px rgba(108, 117, 125, 0.4);
 }
 
+.btn-danger {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 14px 25px;
+    border-radius: 8px;
+    font-size: 1.05em;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    transition: background 0.3s;
+    margin-bottom: 10px;
+}
+
+.btn-danger:active {
+    background: #c82333;
+    transform: scale(0.98);
+}
+
 .empty-message {
     text-align: center;
     color: #999;
