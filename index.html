@@ -12,6 +12,27 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- תפריט המבורגר -->
+    <div class="hamburger-menu" onclick="toggleMenu()">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+    
+    <!-- תפריט צד -->
+    <div id="sideMenu" class="side-menu">
+        <div class="menu-header">
+            <h2>תפריט</h2>
+            <button class="close-btn" onclick="toggleMenu()">✕</button>
+        </div>
+        <div class="menu-items">
+            <a href="#" onclick="openSettings(); return false;">⚙️ הגדרות</a>
+        </div>
+    </div>
+    
+    <!-- רקע כהה -->
+    <div id="menuOverlay" class="menu-overlay" onclick="toggleMenu()"></div>
+    
     <div class="container">
         <h1>🏠 ברוכים הבאים!</h1>
         <p>האפליקציה המשותפת שלנו</p>
@@ -24,5 +45,7 @@
             <a href="shopping.html" class="btn">🛒 רשימת קניות</a>
         </div>
     </div>
+    
+    <script src="menu.js"></script>
 </body>
 </html>

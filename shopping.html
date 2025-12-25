@@ -13,6 +13,44 @@
     <link rel="stylesheet" href="shopping.css">
 </head>
 <body>
+    <!-- תפריט המבורגר -->
+    <div class="hamburger-menu" onclick="toggleMenu()">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+    
+    <!-- תפריט צד -->
+    <div id="sideMenu" class="side-menu">
+        <div class="menu-header">
+            <h2>תפריט</h2>
+            <button class="close-btn" onclick="toggleMenu()">✕</button>
+        </div>
+        <div class="menu-items">
+            <a href="#" onclick="openSettings(); return false;">⚙️ הגדרות</a>
+        </div>
+    </div>
+    
+    <!-- רקע כהה -->
+    <div id="menuOverlay" class="menu-overlay" onclick="toggleMenu()"></div>
+    
+    <!-- מודל הגדרות -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>⚙️ הגדרות</h2>
+                <button class="close-btn" onclick="closeSettings()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="setting-item danger-zone">
+                    <h3>⚠️ אזור מסוכן</h3>
+                    <p>פעולה זו תמחק את כל הנתונים השמורים באפליקציה</p>
+                    <button class="btn-danger" onclick="resetSystem()">🗑️ איפוס מערכת</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <div class="container">
         <h1>🛒 רשימת קניות</h1>
         
@@ -32,5 +70,6 @@
     </div>
 
     <script src="shopping.js"></script>
+    <script src="menu.js"></script>
 </body>
 </html>
