@@ -102,7 +102,7 @@ function showSuggestions(query) {
     suggestionsDiv.innerHTML = matches.map(([key, data]) => `
         <div class="suggestion-item" onclick="selectSuggestion('${data.text.replace(/'/g, "\\'")}')">>
             <span class="suggestion-text">${data.text}</span>
-            <span class="suggestion-count">(${data.count})</span>
+
         </div>
     `).join('');
     
@@ -167,3 +167,8 @@ document.addEventListener('click', (e) => {
 
 // טעינה ראשונית
 loadItems();
+
+// פונקציית סגירת עמוד
+function closePage() {
+    window.location.href = 'index.html';
+}
