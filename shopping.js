@@ -1,31 +1,85 @@
 let shoppingItems = [];
 let itemHistory = {};
 
-// טעינת הרשימה מ-localStorage
-function loadItems() {
-    const saved = localStorage.getItem('shoppingList');
-    if (saved) {
-        shoppingItems = JSON.parse(saved);
+// --- FIRESTORE SYNC ---
+
+// קריאה בזמן אמת
+function listenToShoppingList() {
+    db.collection('shoppingList').orderBy('timestamp')
+      .onSnapshot(snapshot => {
+        shoppingItems = [];
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          shoppingItems.push({
+            id: doc.id,
+            text: data.text,
+            qty: data.qty,
+            completed: data.completed
+          });
+        });
         renderList();
-    }
-    
-    const history = localStorage.getItem('itemHistory');
-    if (history) {
-        itemHistory = JSON.parse(history);
+      });
+}
+
+// הוספת מוצר
+function addItem() {
+    const input = document.getElementById('itemInput');
+    const text = input.value.trim();
+    if (text) {
+        db.collection('shoppingList').add({
+            text,
+            qty: 1,
+            completed: false,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        addToHistory(text);
+        input.value = '';
+        hideSuggestions();
     }
 }
 
-// שמירת הרשימה ל-localStorage
-function saveItems() {
-    localStorage.setItem('shoppingList', JSON.stringify(shoppingItems));
+// עדכון כמות
+function increaseQty(e, index) {
+    e.stopPropagation();
+    const item = shoppingItems[index];
+    db.collection('shoppingList').doc(item.id).update({ qty: (item.qty || 1) + 1 });
 }
 
-// שמירת היסטוריה
+function decreaseQty(e, index) {
+    e.stopPropagation();
+    const item = shoppingItems[index];
+    if ((item.qty || 1) > 1) {
+        db.collection('shoppingList').doc(item.id).update({ qty: (item.qty || 1) - 1 });
+    } else {
+        if (confirm('האם אתה בטוח שברצונך להסיר את הפריט מהרשימה?')) {
+            db.collection('shoppingList').doc(item.id).delete();
+        }
+    }
+}
+
+// סימון מוצר כקנוי
+function toggleItem(index) {
+    const item = shoppingItems[index];
+    db.collection('shoppingList').doc(item.id).update({ completed: !item.completed });
+}
+
+// --- FIRESTORE SYNC להיסטוריה ---
+function listenToItemHistory() {
+    db.collection('itemHistory').onSnapshot(snapshot => {
+        itemHistory = {};
+        snapshot.forEach(doc => {
+            itemHistory[doc.id] = doc.data();
+        });
+    });
+}
+
 function saveHistory() {
-    localStorage.setItem('itemHistory', JSON.stringify(itemHistory));
+    // שמירה של כל ההיסטוריה ל-Firestore
+    Object.entries(itemHistory).forEach(([key, data]) => {
+        db.collection('itemHistory').doc(key).set(data);
+    });
 }
 
-// הוספה להיסטוריה
 function addToHistory(item) {
     const itemLower = item.toLowerCase().trim();
     if (itemHistory[itemLower]) {
@@ -40,6 +94,8 @@ function addToHistory(item) {
     }
     saveHistory();
 }
+
+listenToItemHistory();
 
 // הצגת הרשימה
 function renderList() {
@@ -60,44 +116,6 @@ function renderList() {
             </div>
         </li>
     `).join('');
-}
-
-function increaseQty(e, index) {
-    e.stopPropagation();
-    if (!shoppingItems[index].qty) shoppingItems[index].qty = 1;
-    shoppingItems[index].qty++;
-    saveItems();
-    renderList();
-}
-
-function decreaseQty(e, index) {
-    e.stopPropagation();
-    if (!shoppingItems[index].qty) shoppingItems[index].qty = 1;
-    if (shoppingItems[index].qty > 1) {
-        shoppingItems[index].qty--;
-    } else {
-        // אם הכמות יורדת לאפס - בקשת אישור למחיקה
-        if (confirm('האם אתה בטוח שברצונך להסיר את הפריט מהרשימה?')) {
-            shoppingItems.splice(index, 1);
-        }
-    }
-    saveItems();
-    renderList();
-}
-
-// הוספת מוצר
-function addItem() {
-    const input = document.getElementById('itemInput');
-    const text = input.value.trim();
-    
-    if (text) {
-        shoppingItems.push({ text, completed: false, qty: 1 });
-        addToHistory(text);
-        input.value = '';
-        hideSuggestions();
-        saveItems();
-        renderList();
-    }
 }
 
 // הצגת הצעות
@@ -149,13 +167,6 @@ function selectSuggestion(text) {
     addItem(); // הוספה אוטומטית לרשימה
 }
 
-// סימון מוצר כקנוי
-function toggleItem(index) {
-    shoppingItems[index].completed = !shoppingItems[index].completed;
-    saveItems();
-    renderList();
-}
-
 // מחיקת מוצר
 function deleteItem(index) {
     shoppingItems.splice(index, 1);
@@ -203,7 +214,7 @@ document.addEventListener('click', (e) => {
 });
 
 // טעינה ראשונית
-loadItems();
+listenToShoppingList();
 
 // פונקציית סגירת עמוד
 function closePage() {

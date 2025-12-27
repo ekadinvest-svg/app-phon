@@ -1,15 +1,35 @@
 let apartmentItems = [];
 
-function loadApartmentItems() {
-    const saved = localStorage.getItem('apartmentList');
-    if (saved) {
-        apartmentItems = JSON.parse(saved);
+// --- FIRESTORE SYNC ---
+function listenToApartmentList() {
+    db.collection('apartmentList').orderBy('timestamp')
+      .onSnapshot(snapshot => {
+        apartmentItems = [];
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          apartmentItems.push({
+            id: doc.id,
+            name: data.name,
+            price: data.price
+          });
+        });
         renderApartmentList();
-    }
+      });
 }
 
-function saveApartmentItems() {
-    localStorage.setItem('apartmentList', JSON.stringify(apartmentItems));
+function addApartmentItem() {
+    const nameInput = document.getElementById('apartmentItemInput');
+    const priceInput = document.getElementById('apartmentPriceInput');
+    const name = nameInput.value.trim();
+    const price = parseFloat(priceInput.value);
+    if (!name || isNaN(price) || price < 0) return;
+    db.collection('apartmentList').add({
+        name,
+        price,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    nameInput.value = '';
+    priceInput.value = '';
 }
 
 function renderApartmentList() {
@@ -26,19 +46,6 @@ function renderApartmentList() {
     `).join('');
 }
 
-function addApartmentItem() {
-    const nameInput = document.getElementById('apartmentItemInput');
-    const priceInput = document.getElementById('apartmentPriceInput');
-    const name = nameInput.value.trim();
-    const price = parseFloat(priceInput.value);
-    if (!name || isNaN(price) || price < 0) return;
-    apartmentItems.push({ name, price });
-    nameInput.value = '';
-    priceInput.value = '';
-    saveApartmentItems();
-    renderApartmentList();
-}
-
 document.getElementById('addApartmentBtn').addEventListener('click', addApartmentItem);
 document.getElementById('apartmentItemInput').addEventListener('keypress', (e) => {
     if (e.key === 'Enter') addApartmentItem();
@@ -47,4 +54,4 @@ document.getElementById('apartmentPriceInput').addEventListener('keypress', (e) 
     if (e.key === 'Enter') addApartmentItem();
 });
 
-loadApartmentItems();
+listenToApartmentList();
