@@ -310,3 +310,65 @@ p {
         background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
     }
 }
+
+/* עיצוב דף הבית - מרובעים */
+.home-container {
+    background: transparent;
+    box-shadow: none;
+    padding: 20px;
+    max-width: 100%;
+}
+
+.tiles-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.tile {
+    aspect-ratio: 1;
+    background: white;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s;
+    padding: 15px;
+}
+
+.tile:active {
+    transform: scale(0.95);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.tile-icon {
+    font-size: 3em;
+    margin-bottom: 10px;
+}
+
+.tile-label {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+}
+
+@media (max-width: 380px) {
+    .tiles-grid {
+        gap: 15px;
+    }
+    
+    .tile-icon {
+        font-size: 2.5em;
+    }
+    
+    .tile-label {
+        font-size: 1em;
+    }
+}
