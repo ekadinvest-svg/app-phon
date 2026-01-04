@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#667eea">
+    <title>הוצאות אירוע</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="event.css">
+</head>
+<body>
+    <!-- כפתור חזרה -->
+    <div class="close-page-btn" onclick="goBack()">✕</div>
+    
+    <!-- תפריט המבורגר -->
+    <div class="hamburger-menu" onclick="toggleMenu()">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+    
+    <!-- תפריט צד -->
+    <div id="sideMenu" class="side-menu">
+        <div class="menu-header">
+            <h2>תפריט</h2>
+            <button class="close-btn" onclick="toggleMenu()">✕</button>
+        </div>
+        <div class="menu-items">
+            <a href="index.html">🏠 דף הבית</a>
+            <a href="shopping.html">🛒 רשימת קניות</a>
+            <a href="apartment.html">🏢 דירה</a>
+            <a href="calendar.html">📅 לוח שנה</a>
+        </div>
+    </div>
+    
+    <!-- רקע כהה -->
+    <div id="menuOverlay" class="menu-overlay" onclick="toggleMenu()"></div>
+    
+    <div class="container event-page-container">
+        <h1>💰 הוצאות</h1>
+        <div id="eventSubtitle" class="event-subtitle"></div>
+        
+        <div class="add-form">
+            <div class="add-form-row">
+                <input type="text" id="expenseName" placeholder="שם ההוצאה" />
+                <input type="number" id="expensePrice" placeholder="מחיר (₪)" min="0" style="max-width:120px;" />
+            </div>
+            <button class="btn" onclick="addExpense()">➕ הוסף הוצאה</button>
+        </div>
+        
+        <ul id="expensesList" class="event-list"></ul>
+        
+        <div id="totalExpenses" class="total-expenses" style="display:none;">
+            <span class="total-label">סה"כ:</span>
+            <span class="total-amount" id="totalAmount">₪0</span>
+        </div>
+    </div>
+    
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="firebase.js"></script>
+    <script src="menu.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const eventId = urlParams.get('id');
+        
+        if (!eventId) {
+            window.location.href = 'index.html';
+        }
+        
+        let expenses = [];
+        
+        // טעינת שם האירוע
+        db.collection('userEvents').doc(eventId).get().then(doc => {
+            if (doc.exists) {
+                document.getElementById('eventSubtitle').textContent = doc.data().name;
+            }
+        });
+        
+        // האזנה להוצאות
+        db.collection('eventExpenses')
+            .where('eventId', '==', eventId)
+            .onSnapshot(snapshot => {
+                expenses = [];
+                snapshot.forEach(doc => {
+                    expenses.push({ id: doc.id, ...doc.data() });
+                });
+                renderExpenses();
+            });
+        
+        function renderExpenses() {
+            const list = document.getElementById('expensesList');
+            const totalDiv = document.getElementById('totalExpenses');
+            
+            if (expenses.length === 0) {
+                list.innerHTML = '<div class="empty-message">אין הוצאות עדיין</div>';
+                totalDiv.style.display = 'none';
+                return;
+            }
+            
+            list.innerHTML = expenses.map(exp => `
+                <li>
+                    <div class="item-info">
+                        <div class="item-name">${exp.name}</div>
+                    </div>
+                    <span class="item-price">₪${exp.price}</span>
+                    <button class="delete-btn" onclick="deleteExpense('${exp.id}')">🗑️</button>
+                </li>
+            `).join('');
+            
+            const total = expenses.reduce((sum, exp) => sum + (parseFloat(exp.price) || 0), 0);
+            document.getElementById('totalAmount').textContent = '₪' + total.toLocaleString();
+            totalDiv.style.display = 'flex';
+        }
+        
+        function addExpense() {
+            const name = document.getElementById('expenseName').value.trim();
+            const price = document.getElementById('expensePrice').value;
+            
+            if (!name || !price) {
+                alert('נא למלא שם ומחיר');
+                return;
+            }
+            
+            db.collection('eventExpenses').add({
+                eventId: eventId,
+                name: name,
+                price: parseFloat(price),
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                document.getElementById('expenseName').value = '';
+                document.getElementById('expensePrice').value = '';
+            });
+        }
+        
+        function deleteExpense(id) {
+            db.collection('eventExpenses').doc(id).delete();
+        }
+        
+        function goBack() {
+            window.location.href = `event.html?id=${eventId}`;
+        }
+    </script>
+</body>
+</html>

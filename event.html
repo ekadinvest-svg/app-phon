@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#667eea">
+    <title>אירוע</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="event.css">
+</head>
+<body>
+    <!-- כפתור חזרה -->
+    <div class="close-page-btn" onclick="goBack()">✕</div>
+    
+    <!-- תפריט המבורגר -->
+    <div class="hamburger-menu" onclick="toggleMenu()">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+    
+    <!-- תפריט צד -->
+    <div id="sideMenu" class="side-menu">
+        <div class="menu-header">
+            <h2>תפריט</h2>
+            <button class="close-btn" onclick="toggleMenu()">✕</button>
+        </div>
+        <div class="menu-items">
+            <a href="index.html">🏠 דף הבית</a>
+            <a href="shopping.html">🛒 רשימת קניות</a>
+            <a href="apartment.html">🏢 דירה</a>
+            <a href="calendar.html">📅 לוח שנה</a>
+            <a href="#" onclick="openSettings(); return false;">⚙️ הגדרות</a>
+        </div>
+    </div>
+    
+    <!-- רקע כהה -->
+    <div id="menuOverlay" class="menu-overlay" onclick="toggleMenu()"></div>
+    
+    <!-- מודל הגדרות -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>⚙️ הגדרות</h2>
+                <button class="close-btn" onclick="closeSettings()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="setting-item">
+                    <button class="btn" onclick="openHelp()" style="width:100%;">❓ עזרה ומדריך</button>
+                </div>
+                <div class="setting-item danger-zone">
+                    <h3>⚠️ מחיקת אירוע</h3>
+                    <p>פעולה זו תמחק את האירוע וכל הנתונים שלו</p>
+                    <button class="btn-danger" onclick="deleteCurrentEvent()">🗑️ מחק אירוע</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- מודל עזרה -->
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>❓ עזרה ומדריך</h2>
+                <button class="close-btn" onclick="closeHelp()">✕</button>
+            </div>
+            <div class="modal-body help-content">
+                <div class="help-section">
+                    <h3>🎉 ניהול אירוע</h3>
+                    <ul>
+                        <li><strong>הוצאות:</strong> מעקב אחר כל ההוצאות של האירוע</li>
+                        <li><strong>ספקים:</strong> רשימת ספקים עם פרטים</li>
+                        <li><strong>רעיונות:</strong> רשימת רעיונות לאירוע</li>
+                        <li><strong>ספירה לאחור:</strong> שעון עצר עד לאירוע</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container event-container">
+        <h1 id="eventTitle">🎉 טוען...</h1>
+        
+        <div class="tiles-grid">
+            <a href="#" id="expensesLink" class="tile">
+                <span class="tile-icon">💰</span>
+                <span class="tile-label">הוצאות</span>
+            </a>
+            <a href="#" id="vendorsLink" class="tile">
+                <span class="tile-icon">👥</span>
+                <span class="tile-label">ספקים</span>
+            </a>
+            <a href="#" id="ideasLink" class="tile">
+                <span class="tile-icon">💡</span>
+                <span class="tile-label">רעיונות</span>
+            </a>
+            <a href="#" id="countdownLink" class="tile">
+                <span class="tile-icon">⏰</span>
+                <span class="tile-label">ספירה לאחור</span>
+            </a>
+        </div>
+    </div>
+    
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="firebase.js"></script>
+    <script src="menu.js"></script>
+    <script>
+        // קבלת ID של האירוע מה-URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const eventId = urlParams.get('id');
+        
+        if (!eventId) {
+            window.location.href = 'index.html';
+        }
+        
+        // טעינת פרטי האירוע
+        db.collection('userEvents').doc(eventId).get().then(doc => {
+            if (doc.exists) {
+                const event = doc.data();
+                document.getElementById('eventTitle').textContent = '🎉 ' + event.name;
+                document.title = event.name;
+                
+                // עדכון הלינקים
+                document.getElementById('expensesLink').href = `event-expenses.html?id=${eventId}`;
+                document.getElementById('vendorsLink').href = `event-vendors.html?id=${eventId}`;
+                document.getElementById('ideasLink').href = `event-ideas.html?id=${eventId}`;
+                document.getElementById('countdownLink').href = `event-countdown.html?id=${eventId}`;
+            } else {
+                alert('האירוע לא נמצא');
+                window.location.href = 'index.html';
+            }
+        });
+        
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+        
+        function deleteCurrentEvent() {
+            if (confirm('האם אתה בטוח שברצונך למחוק את האירוע?\n\nפעולה זו תמחק את כל ההוצאות, הספקים, הרעיונות והספירה לאחור.\n\nפעולה זו בלתי הפיכה!')) {
+                // מחיקת כל הנתונים של האירוע
+                const batch = db.batch();
+                
+                // מחיקת הוצאות
+                db.collection('eventExpenses').where('eventId', '==', eventId).get().then(snapshot => {
+                    snapshot.forEach(doc => batch.delete(doc.ref));
+                });
+                
+                // מחיקת ספקים
+                db.collection('eventVendors').where('eventId', '==', eventId).get().then(snapshot => {
+                    snapshot.forEach(doc => batch.delete(doc.ref));
+                });
+                
+                // מחיקת רעיונות
+                db.collection('eventIdeas').where('eventId', '==', eventId).get().then(snapshot => {
+                    snapshot.forEach(doc => batch.delete(doc.ref));
+                });
+                
+                // מחיקת האירוע עצמו
+                db.collection('userEvents').doc(eventId).delete().then(() => {
+                    alert('האירוע נמחק בהצלחה');
+                    window.location.href = 'index.html';
+                });
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,277 @@
+/* עיצוב עמודי אירוע */
+
+.event-container {
+    padding-top: 80px;
+}
+
+.event-container h1 {
+    text-align: center;
+    color: #667eea;
+    margin-bottom: 25px;
+    font-size: 1.5em;
+}
+
+/* כפתור FAB להוספת אירוע */
+.add-event-fab {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    font-size: 2.5em;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.5);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.add-event-fab:active {
+    transform: translateX(-50%) scale(0.95);
+    box-shadow: 0 2px 10px rgba(102, 126, 234, 0.5);
+}
+
+/* רשימת אירועים בדף הראשי */
+.events-tiles {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+    padding-bottom: 100px;
+}
+
+.event-tile {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.event-tile .tile-icon {
+    font-size: 2em;
+}
+
+.event-tile .tile-label {
+    font-size: 0.9em;
+}
+
+/* שדה שם אירוע */
+.event-name-input {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 16px;
+    text-align: right;
+    transition: border-color 0.3s;
+}
+
+.event-name-input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+/* עמודי אירוע פנימיים */
+.event-page-container {
+    padding-top: 80px;
+}
+
+.event-page-container h1 {
+    text-align: center;
+    color: #667eea;
+    margin-bottom: 20px;
+    font-size: 1.4em;
+}
+
+.event-subtitle {
+    text-align: center;
+    color: #888;
+    font-size: 0.9em;
+    margin-bottom: 20px;
+}
+
+/* טופס הוספה */
+.add-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.add-form-row {
+    display: flex;
+    gap: 10px;
+}
+
+.add-form input {
+    flex: 1;
+    padding: 14px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+.add-form input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.add-form .btn {
+    white-space: nowrap;
+}
+
+/* רשימת פריטים */
+.event-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 50vh;
+    overflow-y: auto;
+}
+
+.event-list li {
+    background: #f8f9fa;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.event-list .item-info {
+    flex: 1;
+    text-align: right;
+}
+
+.event-list .item-name {
+    font-weight: bold;
+    color: #333;
+}
+
+.event-list .item-detail {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 3px;
+}
+
+.event-list .item-price {
+    background: #28a745;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+/* סה"כ הוצאות */
+.total-expenses {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 15px 20px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    font-size: 1.1em;
+}
+
+.total-expenses .total-label {
+    font-weight: bold;
+}
+
+.total-expenses .total-amount {
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+/* ספירה לאחור */
+.countdown-container {
+    text-align: center;
+    padding: 20px;
+}
+
+.countdown-date-input {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 16px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.countdown-date-input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.countdown-display {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 20px;
+    padding: 30px 20px;
+    color: white;
+    margin-top: 20px;
+}
+
+.countdown-title {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+.countdown-boxes {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.countdown-box {
+    background: rgba(255,255,255,0.2);
+    border-radius: 15px;
+    padding: 15px 20px;
+    min-width: 70px;
+}
+
+.countdown-number {
+    font-size: 2.5em;
+    font-weight: bold;
+    display: block;
+}
+
+.countdown-label {
+    font-size: 0.85em;
+    opacity: 0.9;
+}
+
+.countdown-passed {
+    background: #dc3545;
+    padding: 20px;
+    border-radius: 15px;
+    color: white;
+    font-size: 1.2em;
+}
+
+/* רעיונות */
+.idea-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.idea-item.completed .item-name {
+    text-decoration: line-through;
+    opacity: 0.6;
+}
+
+.idea-checkbox {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+}

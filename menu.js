@@ -26,7 +26,7 @@ function closeSettings() {
 
 // איפוס מערכת
 function resetSystem() {
-    if (confirm('האם אתה בטוח שברצונך למחוק את כל הנתונים?\n\nפעולה זו תמחק:\n• את כל רשימת הקניות\n• את היסטוריית המוצרים\n• את הוצאות הדירה\n• את כל הנתונים השמורים\n\nפעולה זו בלתי הפיכה!')) {
+    if (confirm('האם אתה בטוח שברצונך למחוק את כל הנתונים?\n\nפעולה זו תמחק:\n• את כל רשימת הקניות\n• את היסטוריית המוצרים\n• את הוצאות הדירה\n• את כל האירועים\n• את כל הנתונים השמורים\n\nפעולה זו בלתי הפיכה!')) {
         // מחיקת כל ה-localStorage
         localStorage.clear();
         
@@ -44,8 +44,24 @@ function resetSystem() {
             db.collection('apartmentList').get().then(snapshot => {
                 snapshot.forEach(doc => doc.ref.delete());
             });
-            // מחיקת אירועים
+            // מחיקת אירועי לוח שנה
             db.collection('events').get().then(snapshot => {
+                snapshot.forEach(doc => doc.ref.delete());
+            });
+            // מחיקת אירועים משתמש
+            db.collection('userEvents').get().then(snapshot => {
+                snapshot.forEach(doc => doc.ref.delete());
+            });
+            // מחיקת הוצאות אירועים
+            db.collection('eventExpenses').get().then(snapshot => {
+                snapshot.forEach(doc => doc.ref.delete());
+            });
+            // מחיקת ספקים
+            db.collection('eventVendors').get().then(snapshot => {
+                snapshot.forEach(doc => doc.ref.delete());
+            });
+            // מחיקת רעיונות
+            db.collection('eventIdeas').get().then(snapshot => {
                 snapshot.forEach(doc => doc.ref.delete());
             });
         }

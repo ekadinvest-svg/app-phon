@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#667eea">
+    <title>ספקים</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="event.css">
+</head>
+<body>
+    <!-- כפתור חזרה -->
+    <div class="close-page-btn" onclick="goBack()">✕</div>
+    
+    <!-- תפריט המבורגר -->
+    <div class="hamburger-menu" onclick="toggleMenu()">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+    
+    <!-- תפריט צד -->
+    <div id="sideMenu" class="side-menu">
+        <div class="menu-header">
+            <h2>תפריט</h2>
+            <button class="close-btn" onclick="toggleMenu()">✕</button>
+        </div>
+        <div class="menu-items">
+            <a href="index.html">🏠 דף הבית</a>
+            <a href="shopping.html">🛒 רשימת קניות</a>
+            <a href="apartment.html">🏢 דירה</a>
+            <a href="calendar.html">📅 לוח שנה</a>
+        </div>
+    </div>
+    
+    <!-- רקע כהה -->
+    <div id="menuOverlay" class="menu-overlay" onclick="toggleMenu()"></div>
+    
+    <div class="container event-page-container">
+        <h1>👥 ספקים</h1>
+        <div id="eventSubtitle" class="event-subtitle"></div>
+        
+        <div class="add-form">
+            <div class="add-form-row">
+                <input type="text" id="vendorName" placeholder="שם הספק" />
+                <input type="text" id="vendorRole" placeholder="תפקיד (למשל: צלם)" />
+            </div>
+            <button class="btn" onclick="addVendor()">➕ הוסף ספק</button>
+        </div>
+        
+        <ul id="vendorsList" class="event-list"></ul>
+    </div>
+    
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="firebase.js"></script>
+    <script src="menu.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const eventId = urlParams.get('id');
+        
+        if (!eventId) {
+            window.location.href = 'index.html';
+        }
+        
+        let vendors = [];
+        
+        // טעינת שם האירוע
+        db.collection('userEvents').doc(eventId).get().then(doc => {
+            if (doc.exists) {
+                document.getElementById('eventSubtitle').textContent = doc.data().name;
+            }
+        });
+        
+        // האזנה לספקים
+        db.collection('eventVendors')
+            .where('eventId', '==', eventId)
+            .onSnapshot(snapshot => {
+                vendors = [];
+                snapshot.forEach(doc => {
+                    vendors.push({ id: doc.id, ...doc.data() });
+                });
+                renderVendors();
+            });
+        
+        function renderVendors() {
+            const list = document.getElementById('vendorsList');
+            
+            if (vendors.length === 0) {
+                list.innerHTML = '<div class="empty-message">אין ספקים עדיין</div>';
+                return;
+            }
+            
+            list.innerHTML = vendors.map(vendor => `
+                <li>
+                    <div class="item-info">
+                        <div class="item-name">${vendor.name}</div>
+                        <div class="item-detail">${vendor.role}</div>
+                    </div>
+                    <button class="delete-btn" onclick="deleteVendor('${vendor.id}')">🗑️</button>
+                </li>
+            `).join('');
+        }
+        
+        function addVendor() {
+            const name = document.getElementById('vendorName').value.trim();
+            const role = document.getElementById('vendorRole').value.trim();
+            
+            if (!name || !role) {
+                alert('נא למלא שם ותפקיד');
+                return;
+            }
+            
+            db.collection('eventVendors').add({
+                eventId: eventId,
+                name: name,
+                role: role,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                document.getElementById('vendorName').value = '';
+                document.getElementById('vendorRole').value = '';
+            });
+        }
+        
+        function deleteVendor(id) {
+            db.collection('eventVendors').doc(id).delete();
+        }
+        
+        function goBack() {
+            window.location.href = `event.html?id=${eventId}`;
+        }
+    </script>
+</body>
+</html>
