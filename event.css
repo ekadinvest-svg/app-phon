@@ -39,11 +39,15 @@
 }
 
 /* כפתור FAB להוספת אירוע */
-.add-event-fab {
+.fab-container {
     position: fixed;
     bottom: 30px;
     left: 50%;
     transform: translateX(-50%);
+    z-index: 100;
+}
+
+.add-event-fab {
     width: 60px;
     height: 60px;
     border-radius: 50%;
@@ -54,16 +58,84 @@
     font-weight: bold;
     cursor: pointer;
     box-shadow: 0 4px 20px rgba(102, 126, 234, 0.5);
-    z-index: 100;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.3s;
+    position: relative;
+    z-index: 101;
 }
 
 .add-event-fab:active {
-    transform: translateX(-50%) scale(0.95);
+    transform: scale(0.95);
     box-shadow: 0 2px 10px rgba(102, 126, 234, 0.5);
+}
+
+.add-event-fab.active {
+    transform: rotate(45deg);
+}
+
+/* תפריט גלגל */
+.fab-menu {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+}
+
+.fab-menu .fab-option {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #667eea;
+    color: white;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    pointer-events: none;
+}
+
+.fab-menu .fab-option.fab-delete {
+    background: #dc3545;
+}
+
+/* מיקום הכפתורים - מעל הכפתור הראשי */
+.fab-menu .fab-option:nth-child(1) {
+    bottom: 75px;
+    left: -60px;
+}
+
+.fab-menu .fab-option:nth-child(2) {
+    bottom: 75px;
+    left: 10px;
+}
+
+/* כשהתפריט פתוח */
+.fab-menu.active .fab-option {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+}
+
+.fab-menu.active .fab-option:nth-child(1) {
+    transition-delay: 0.05s;
+}
+
+.fab-menu.active .fab-option:nth-child(2) {
+    transition-delay: 0.1s;
+}
+
+.fab-option:active {
+    transform: scale(0.9);
 }
 
 /* רשימת אירועים בדף הראשי */
@@ -77,6 +149,35 @@
 
 .event-tile {
     background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+/* רשימת אירועים למחיקה */
+.delete-events-list {
+    max-height: 50vh;
+    overflow-y: auto;
+}
+
+.delete-event-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    gap: 10px;
+}
+
+.delete-event-item .event-name {
+    flex: 1;
+    font-weight: bold;
+    text-align: right;
+}
+
+.delete-event-item .btn-danger {
+    padding: 10px 15px;
+    font-size: 0.9em;
+    white-space: nowrap;
 }
 
 .event-tile .tile-icon {

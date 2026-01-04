@@ -104,7 +104,7 @@
     </div>
     
     <div class="container home-container">
-        <div class="tiles-grid">
+        <div id="tilesGrid" class="tiles-grid">
             <a href="shopping.html" class="tile">
                 <span class="tile-icon">🛒</span>
                 <span class="tile-label">רשימת קניות</span>
@@ -117,13 +117,21 @@
                 <span class="tile-icon">📅</span>
                 <span class="tile-label">לוח שנה</span>
             </a>
+            <!-- אירועים יתווספו כאן דינמית -->
         </div>
         
-        <!-- רשימת אירועים -->
-        <div id="eventsList" class="events-tiles"></div>
-        
-        <!-- כפתור הוספת אירוע -->
-        <button class="add-event-fab" onclick="openNewEventModal()">+</button>
+        <!-- כפתור FAB עם תפריט גלגל -->
+        <div class="fab-container">
+            <button class="add-event-fab" onclick="toggleFabMenu()">+</button>
+            <div id="fabMenu" class="fab-menu">
+                <button class="fab-option" onclick="openNewEventModal()" title="הוסף אירוע">
+                    <span>🎉</span>
+                </button>
+                <button class="fab-option fab-delete" onclick="openDeleteEventModal()" title="מחק אירוע">
+                    <span>🗑️</span>
+                </button>
+            </div>
+        </div>
     </div>
     
     <!-- מודל יצירת אירוע חדש -->
@@ -136,6 +144,20 @@
             <div class="modal-body">
                 <input type="text" id="newEventName" placeholder="שם האירוע (למשל: החתונה של דני ומיכל)" class="event-name-input" />
                 <button class="btn" onclick="createNewEvent()" style="width:100%;margin-top:15px;">🎊 צור אירוע</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- מודל מחיקת אירוע -->
+    <div id="deleteEventModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🗑️ מחיקת אירוע</h2>
+                <button class="close-btn" onclick="closeDeleteEventModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <p style="text-align:center;color:#666;margin-bottom:15px;">בחר אירוע למחיקה:</p>
+                <div id="deleteEventsList" class="delete-events-list"></div>
             </div>
         </div>
     </div>
