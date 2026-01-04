@@ -169,18 +169,18 @@ function selectSuggestion(text) {
 
 // מחיקת מוצר
 function deleteItem(index) {
-    shoppingItems.splice(index, 1);
-    saveItems();
-    renderList();
+    const item = shoppingItems[index];
+    db.collection('shoppingList').doc(item.id).delete();
 }
 
 // ריקון כל הרשימה
 function clearList() {
     if (shoppingItems.length === 0) return;
     if (confirm('האם אתה בטוח שברצונך לרוקן את כל רשימת הקניות?')) {
-        shoppingItems = [];
-        saveItems();
-        renderList();
+        // מחיקת כל הפריטים מ-Firestore
+        shoppingItems.forEach(item => {
+            db.collection('shoppingList').doc(item.id).delete();
+        });
     }
 }
 

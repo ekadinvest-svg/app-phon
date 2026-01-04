@@ -26,9 +26,25 @@ function closeSettings() {
 
 // איפוס מערכת
 function resetSystem() {
-    if (confirm('האם אתה בטוח שברצונך למחוק את כל הנתונים?\n\nפעולה זו תמחק:\n• את כל רשימת הקניות\n• את היסטוריית המוצרים\n• את כל הנתונים השמורים\n\nפעולה זו בלתי הפיכה!')) {
+    if (confirm('האם אתה בטוח שברצונך למחוק את כל הנתונים?\n\nפעולה זו תמחק:\n• את כל רשימת הקניות\n• את היסטוריית המוצרים\n• את הוצאות הדירה\n• את כל הנתונים השמורים\n\nפעולה זו בלתי הפיכה!')) {
         // מחיקת כל ה-localStorage
         localStorage.clear();
+        
+        // מחיקת נתונים מ-Firestore
+        if (typeof db !== 'undefined') {
+            // מחיקת רשימת קניות
+            db.collection('shoppingList').get().then(snapshot => {
+                snapshot.forEach(doc => doc.ref.delete());
+            });
+            // מחיקת היסטוריית מוצרים
+            db.collection('itemHistory').get().then(snapshot => {
+                snapshot.forEach(doc => doc.ref.delete());
+            });
+            // מחיקת הוצאות דירה
+            db.collection('apartmentList').get().then(snapshot => {
+                snapshot.forEach(doc => doc.ref.delete());
+            });
+        }
         
         // הודעה למשתמש
         alert('המערכת אופסה בהצלחה! ✅\n\nכל הנתונים נמחקו.');
