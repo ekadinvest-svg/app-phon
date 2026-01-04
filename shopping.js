@@ -5,7 +5,7 @@ let itemHistory = {};
 
 // קריאה בזמן אמת
 function listenToShoppingList() {
-    db.collection('shoppingList').orderBy('timestamp')
+    db.collection('shoppingList')
       .onSnapshot(snapshot => {
         shoppingItems = [];
         snapshot.forEach(doc => {
@@ -13,11 +13,13 @@ function listenToShoppingList() {
           shoppingItems.push({
             id: doc.id,
             text: data.text,
-            qty: data.qty,
-            completed: data.completed
+            qty: data.qty || 1,
+            completed: data.completed || false
           });
         });
         renderList();
+      }, error => {
+        console.error('Error listening to shopping list:', error);
       });
 }
 

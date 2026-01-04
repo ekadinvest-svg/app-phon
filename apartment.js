@@ -2,7 +2,7 @@ let apartmentItems = [];
 
 // --- FIRESTORE SYNC ---
 function listenToApartmentList() {
-    db.collection('apartmentList').orderBy('timestamp')
+    db.collection('apartmentList')
       .onSnapshot(snapshot => {
         apartmentItems = [];
         snapshot.forEach(doc => {
@@ -14,6 +14,8 @@ function listenToApartmentList() {
           });
         });
         renderApartmentList();
+      }, error => {
+        console.error('Error listening to apartment list:', error);
       });
 }
 
