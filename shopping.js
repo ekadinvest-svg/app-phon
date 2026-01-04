@@ -5,11 +5,14 @@ let itemHistory = {};
 
 // קריאה בזמן אמת
 function listenToShoppingList() {
+    console.log('Starting to listen to shopping list...');
     db.collection('shoppingList')
       .onSnapshot(snapshot => {
+        console.log('Got snapshot with', snapshot.size, 'items');
         shoppingItems = [];
         snapshot.forEach(doc => {
           const data = doc.data();
+          console.log('Item:', doc.id, data);
           shoppingItems.push({
             id: doc.id,
             text: data.text,
@@ -20,6 +23,7 @@ function listenToShoppingList() {
         renderList();
       }, error => {
         console.error('Error listening to shopping list:', error);
+        alert('שגיאה בטעינת הרשימה: ' + error.message);
       });
 }
 
@@ -28,11 +32,17 @@ function addItem() {
     const input = document.getElementById('itemInput');
     const text = input.value.trim();
     if (text) {
+        console.log('Adding item:', text);
         db.collection('shoppingList').add({
             text,
             qty: 1,
             completed: false,
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        }).then(() => {
+            console.log('Item added successfully');
+        }).catch(error => {
+            console.error('Error adding item:', error);
+            alert('שגיאה בהוספת מוצר: ' + error.message);
         });
         addToHistory(text);
         input.value = '';
@@ -67,18 +77,25 @@ function toggleItem(index) {
 
 // --- FIRESTORE SYNC להיסטוריה ---
 function listenToItemHistory() {
+    console.log('Starting to listen to item history...');
     db.collection('itemHistory').onSnapshot(snapshot => {
+        console.log('Got history snapshot with', snapshot.size, 'items');
         itemHistory = {};
         snapshot.forEach(doc => {
             itemHistory[doc.id] = doc.data();
         });
+    }, error => {
+        console.error('Error listening to item history:', error);
     });
 }
 
 function saveHistory() {
     // שמירה של כל ההיסטוריה ל-Firestore
+    console.log('Saving history to Firestore...');
     Object.entries(itemHistory).forEach(([key, data]) => {
-        db.collection('itemHistory').doc(key).set(data);
+        db.collection('itemHistory').doc(key).set(data)
+          .then(() => console.log('History saved:', key))
+          .catch(error => console.error('Error saving history:', error));
     });
 }
 

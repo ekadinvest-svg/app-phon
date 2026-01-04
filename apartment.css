@@ -54,6 +54,7 @@
     align-items: center;
     font-size: 1.1em;
     box-shadow: 0 2px 8px rgba(102, 126, 234, 0.08);
+    gap: 10px;
 }
 
 .apartment-list .item-name {
@@ -65,10 +66,27 @@
 .apartment-list .item-price {
     color: #667eea;
     font-weight: bold;
-    margin-right: 15px;
     min-width: 70px;
     text-align: left;
     direction: ltr;
+}
+
+.apartment-list .delete-btn {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    min-width: 40px;
+    min-height: 40px;
+    transition: all 0.2s;
+}
+
+.apartment-list .delete-btn:active {
+    background: #c82333;
+    transform: scale(0.95);
 }
 
 .close-page-btn {

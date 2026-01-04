@@ -44,8 +44,21 @@ function renderApartmentList() {
         <li>
             <span class="item-name">${item.name}</span>
             <span class="item-price">₪${item.price}</span>
+            <button class="delete-btn" onclick="deleteApartmentItem('${item.id}')">🗑️</button>
         </li>
     `).join('');
+}
+
+// מחיקת הוצאה
+function deleteApartmentItem(id) {
+    if (confirm('האם אתה בטוח שברצונך למחוק את ההוצאה?')) {
+        db.collection('apartmentList').doc(id).delete();
+    }
+}
+
+// פונקציית סגירת עמוד
+function closePage() {
+    window.location.href = 'index.html';
 }
 
 document.getElementById('addApartmentBtn').addEventListener('click', addApartmentItem);
