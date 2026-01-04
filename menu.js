@@ -44,6 +44,10 @@ function resetSystem() {
             db.collection('apartmentList').get().then(snapshot => {
                 snapshot.forEach(doc => doc.ref.delete());
             });
+            // מחיקת אירועים
+            db.collection('events').get().then(snapshot => {
+                snapshot.forEach(doc => doc.ref.delete());
+            });
         }
         
         // הודעה למשתמש

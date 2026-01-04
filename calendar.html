@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#667eea">
+    <title>לוח שנה</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="calendar.css">
+</head>
+<body>
+    <!-- תפריט המבורגר -->
+    <div class="hamburger-menu" onclick="toggleMenu()">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+    <!-- כפתור סגירה -->
+    <div class="close-page-btn" onclick="closePage()">✕</div>
+    
+    <!-- תפריט צד -->
+    <div id="sideMenu" class="side-menu">
+        <div class="menu-header">
+            <h2>תפריט</h2>
+            <button class="close-btn" onclick="toggleMenu()">✕</button>
+        </div>
+        <div class="menu-items">
+            <a href="index.html">🏠 דף הבית</a>
+            <a href="shopping.html">🛒 רשימת קניות</a>
+            <a href="apartment.html">🏢 דירה</a>
+            <a href="calendar.html">📅 לוח שנה</a>
+            <a href="#" onclick="openSettings(); return false;">⚙️ הגדרות</a>
+        </div>
+    </div>
+    
+    <!-- רקע כהה -->
+    <div id="menuOverlay" class="menu-overlay" onclick="toggleMenu()"></div>
+    
+    <!-- מודל הגדרות -->
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>⚙️ הגדרות</h2>
+                <button class="close-btn" onclick="closeSettings()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="setting-item danger-zone">
+                    <h3>⚠️ אזור מסוכן</h3>
+                    <p>פעולה זו תמחק את כל הנתונים השמורים באפליקציה</p>
+                    <button class="btn-danger" onclick="resetSystem()">🗑️ איפוס מערכת</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- מודל הוספת אירוע -->
+    <div id="eventModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📅 הוסף אירוע</h2>
+                <button class="close-btn" onclick="closeEventModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>תאריך</label>
+                    <input type="date" id="eventDate" />
+                </div>
+                <div class="form-group">
+                    <label>כותרת</label>
+                    <input type="text" id="eventTitle" placeholder="מה האירוע?" />
+                </div>
+                <div class="form-group">
+                    <label>שעה (אופציונלי)</label>
+                    <input type="time" id="eventTime" />
+                </div>
+                <div class="form-group">
+                    <label>סוג</label>
+                    <select id="eventType">
+                        <option value="event">🎉 אירוע</option>
+                        <option value="task">✅ משימה</option>
+                        <option value="reminder">🔔 תזכורת</option>
+                    </select>
+                </div>
+                <button class="btn" onclick="saveEvent()" style="width:100%;margin-top:15px;">שמור</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <h1>📅 לוח שנה</h1>
+        
+        <!-- ניווט חודשים -->
+        <div class="calendar-nav">
+            <button class="nav-btn" onclick="prevMonth()">❮</button>
+            <h2 id="currentMonth"></h2>
+            <button class="nav-btn" onclick="nextMonth()">❯</button>
+        </div>
+        
+        <!-- לוח השנה -->
+        <div class="calendar-grid">
+            <div class="day-header">א'</div>
+            <div class="day-header">ב'</div>
+            <div class="day-header">ג'</div>
+            <div class="day-header">ד'</div>
+            <div class="day-header">ה'</div>
+            <div class="day-header">ו'</div>
+            <div class="day-header">ש'</div>
+            <div id="calendarDays" class="calendar-days"></div>
+        </div>
+        
+        <!-- כפתור הוספה -->
+        <button class="btn add-event-btn" onclick="openEventModal()">➕ הוסף אירוע</button>
+        
+        <!-- רשימת אירועים -->
+        <div class="events-section">
+            <h3>אירועים קרובים</h3>
+            <ul id="eventsList" class="events-list"></ul>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="firebase.js"></script>
+    <script src="calendar.js"></script>
+    <script src="menu.js"></script>
+</body>
+</html>
