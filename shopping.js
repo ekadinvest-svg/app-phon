@@ -17,7 +17,8 @@ function listenToShoppingList() {
             id: doc.id,
             text: data.text,
             qty: data.qty || 1,
-            completed: data.completed || false
+            completed: data.completed || false,
+            price: data.price || null
           });
         });
         renderList();

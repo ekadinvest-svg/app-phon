@@ -63,10 +63,31 @@ function resetSystem() {
     }
 }
 
+// פתיחת עזרה
+function openHelp() {
+    closeSettings();
+    const modal = document.getElementById('helpModal');
+    if (modal) {
+        modal.classList.add('active');
+    }
+}
+
+// סגירת עזרה
+function closeHelp() {
+    const modal = document.getElementById('helpModal');
+    if (modal) {
+        modal.classList.remove('active');
+    }
+}
+
 // סגירת מודל בלחיצה על הרקע
 document.addEventListener('click', (e) => {
-    const modal = document.getElementById('settingsModal');
-    if (modal && e.target === modal) {
+    const settingsModal = document.getElementById('settingsModal');
+    const helpModal = document.getElementById('helpModal');
+    if (settingsModal && e.target === settingsModal) {
         closeSettings();
+    }
+    if (helpModal && e.target === helpModal) {
+        closeHelp();
     }
 });

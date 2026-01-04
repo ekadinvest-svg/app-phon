@@ -44,10 +44,58 @@
                 <button class="close-btn" onclick="closeSettings()">✕</button>
             </div>
             <div class="modal-body">
+                <div class="setting-item">
+                    <button class="btn" onclick="openHelp()" style="width:100%;">❓ עזרה ומדריך</button>
+                </div>
                 <div class="setting-item danger-zone">
                     <h3>⚠️ אזור מסוכן</h3>
                     <p>פעולה זו תמחק את כל הנתונים השמורים באפליקציה</p>
                     <button class="btn-danger" onclick="resetSystem()">🗑️ איפוס מערכת</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- מודל עזרה -->
+    <div id="helpModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>❓ עזרה ומדריך</h2>
+                <button class="close-btn" onclick="closeHelp()">✕</button>
+            </div>
+            <div class="modal-body help-content">
+                <div class="help-section">
+                    <h3>🛒 רשימת קניות</h3>
+                    <ul>
+                        <li><strong>הוספת מוצר:</strong> הקלד שם מוצר ולחץ "הוסף"</li>
+                        <li><strong>הצעות אוטומטיות:</strong> המערכת זוכרת מוצרים קודמים ומציעה אותם</li>
+                        <li><strong>סימון ביצוע:</strong> לחץ על שם המוצר לסימון V</li>
+                        <li><strong>שינוי כמות:</strong> השתמש בכפתורי + ו-</li>
+                        <li><strong>הוספת מחיר:</strong> לחיצה ארוכה על מוצר (או קליק ימני) מאפשרת להזין מחיר</li>
+                    </ul>
+                </div>
+                <div class="help-section">
+                    <h3>🏢 דירה</h3>
+                    <ul>
+                        <li><strong>מעקב הוצאות:</strong> הוסף הוצאות דירה עם שם וסכום</li>
+                        <li><strong>מחיקה:</strong> לחץ על כפתור המחיקה להסרת הוצאה</li>
+                    </ul>
+                </div>
+                <div class="help-section">
+                    <h3>📅 לוח שנה</h3>
+                    <ul>
+                        <li><strong>צפייה באירועים:</strong> לחץ על תאריך לראות את האירועים שלו</li>
+                        <li><strong>הוספת אירוע:</strong> לחץ "הוסף אירוע" בתוך פרטי היום</li>
+                        <li><strong>סוגי אירועים:</strong> ניתן לבחור אירוע, משימה או תזכורת</li>
+                        <li><strong>ניווט:</strong> חיצים לניווט בין חודשים</li>
+                    </ul>
+                </div>
+                <div class="help-section">
+                    <h3>🔄 סנכרון</h3>
+                    <ul>
+                        <li>כל הנתונים מסונכרנים בזמן אמת בין כל המכשירים</li>
+                        <li>שינויים שתעשה יופיעו מיד אצל בת/בן הזוג</li>
+                    </ul>
                 </div>
             </div>
         </div>
