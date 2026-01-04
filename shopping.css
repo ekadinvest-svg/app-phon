@@ -148,6 +148,17 @@
     touch-action: manipulation;
 }
 
+.item-price {
+    background: #28a745;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: bold;
+    margin-left: 8px;
+    white-space: nowrap;
+}
+
 .delete-btn {
     background: #dc3545;
     color: white;

@@ -126,8 +126,13 @@ function renderList() {
     }
     
     list.innerHTML = shoppingItems.map((item, index) => `
-        <li class="${item.completed ? 'completed' : ''}">
+        <li class="${item.completed ? 'completed' : ''}" 
+            oncontextmenu="event.preventDefault(); openPriceModal(${index});" 
+            ontouchstart="startLongPress(event, ${index})" 
+            ontouchend="cancelLongPress()" 
+            ontouchmove="cancelLongPress()">
             <span class="item-text" onclick="toggleItem(${index})">${item.text}</span>
+            ${item.price ? `<span class="item-price">₪${item.price}</span>` : ''}
             <div class="quantity-control">
                 <button class="qty-btn" onclick="decreaseQty(event, ${index})">-</button>
                 <span class="qty-value">${item.qty || 1}</span>
@@ -135,6 +140,37 @@ function renderList() {
             </div>
         </li>
     `).join('');
+}
+
+// לחיצה ארוכה להוספת מחיר
+let longPressTimer = null;
+
+function startLongPress(e, index) {
+    longPressTimer = setTimeout(() => {
+        openPriceModal(index);
+    }, 500);
+}
+
+function cancelLongPress() {
+    if (longPressTimer) {
+        clearTimeout(longPressTimer);
+        longPressTimer = null;
+    }
+}
+
+function openPriceModal(index) {
+    const item = shoppingItems[index];
+    const currentPrice = item.price || '';
+    const newPrice = prompt(`הזן מחיר ל"${item.text}":`, currentPrice);
+    
+    if (newPrice !== null) {
+        const price = parseFloat(newPrice);
+        if (!isNaN(price) && price >= 0) {
+            db.collection('shoppingList').doc(item.id).update({ price: price });
+        } else if (newPrice === '') {
+            db.collection('shoppingList').doc(item.id).update({ price: null });
+        }
+    }
 }
 
 // הצגת הצעות

@@ -80,23 +80,73 @@ function renderCalendar() {
     }
 }
 
+let selectedDate = null;
+
 function createDayElement(day, isOtherMonth, isToday = false, hasEvent = false, dateStr = '') {
     const dayEl = document.createElement('div');
     dayEl.className = 'calendar-day';
     if (isOtherMonth) dayEl.classList.add('other-month');
     if (isToday) dayEl.classList.add('today');
     if (hasEvent) dayEl.classList.add('has-event');
+    if (dateStr === selectedDate) dayEl.classList.add('selected');
     
     dayEl.innerHTML = `<span class="day-number">${day}</span>`;
     
     if (!isOtherMonth && dateStr) {
         dayEl.onclick = () => {
-            document.getElementById('eventDate').value = dateStr;
-            openEventModal();
+            selectDate(dateStr);
         };
     }
     
     return dayEl;
+}
+
+function selectDate(dateStr) {
+    selectedDate = dateStr;
+    renderCalendar();
+    showDayDetails(dateStr);
+}
+
+function showDayDetails(dateStr) {
+    const dayEvents = events.filter(e => e.date === dateStr);
+    const detailsSection = document.getElementById('dayDetails');
+    const dateObj = new Date(dateStr);
+    const dateFormatted = `${dateObj.getDate()}/${dateObj.getMonth() + 1}/${dateObj.getFullYear()}`;
+    
+    if (dayEvents.length === 0) {
+        detailsSection.innerHTML = `
+            <div class="day-details-header">
+                <h3>📅 ${dateFormatted}</h3>
+            </div>
+            <div class="empty-message">אין אירועים ביום זה</div>
+            <button class="btn" onclick="openEventModalForDate('${dateStr}')" style="width:100%;margin-top:10px;">➕ הוסף אירוע</button>
+        `;
+    } else {
+        detailsSection.innerHTML = `
+            <div class="day-details-header">
+                <h3>📅 ${dateFormatted}</h3>
+            </div>
+            <ul class="day-events-list">
+                ${dayEvents.map(event => `
+                    <li>
+                        <span class="event-type">${eventIcons[event.type] || '📅'}</span>
+                        <div class="event-info">
+                            <div class="event-title">${event.title}</div>
+                            ${event.time ? `<div class="event-time">${event.time}</div>` : ''}
+                        </div>
+                        <button class="delete-btn" onclick="deleteEvent('${event.id}')">🗑️</button>
+                    </li>
+                `).join('')}
+            </ul>
+            <button class="btn" onclick="openEventModalForDate('${dateStr}')" style="width:100%;margin-top:10px;">➕ הוסף אירוע</button>
+        `;
+    }
+    detailsSection.style.display = 'block';
+}
+
+function openEventModalForDate(dateStr) {
+    document.getElementById('eventDate').value = dateStr;
+    openEventModal();
 }
 
 function formatDate(date) {
