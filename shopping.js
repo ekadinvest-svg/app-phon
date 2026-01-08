@@ -126,21 +126,30 @@ function renderList() {
         return;
     }
     
-    list.innerHTML = shoppingItems.map((item, index) => `
+    // מיון - פריטים לא מסומנים קודם, מסומנים אחרים
+    const sortedItems = [...shoppingItems].sort((a, b) => {
+        if (a.completed === b.completed) return 0;
+        return a.completed ? 1 : -1;
+    });
+    
+    list.innerHTML = sortedItems.map((item) => {
+        const originalIndex = shoppingItems.findIndex(i => i.id === item.id);
+        return `
         <li class="${item.completed ? 'completed' : ''}" 
-            oncontextmenu="event.preventDefault(); openPriceModal(${index});" 
-            ontouchstart="startLongPress(event, ${index})" 
+            oncontextmenu="event.preventDefault(); openPriceModal(${originalIndex});" 
+            ontouchstart="startLongPress(event, ${originalIndex})" 
             ontouchend="cancelLongPress()" 
             ontouchmove="cancelLongPress()">
-            <span class="item-text" onclick="toggleItem(${index})">${item.text}</span>
+            <span class="item-text" onclick="toggleItem(${originalIndex})">${item.text}</span>
             ${item.price ? `<span class="item-price">₪${item.price}</span>` : ''}
             <div class="quantity-control">
-                <button class="qty-btn" onclick="decreaseQty(event, ${index})">-</button>
+                <button class="qty-btn" onclick="decreaseQty(event, ${originalIndex})">-</button>
                 <span class="qty-value">${item.qty || 1}</span>
-                <button class="qty-btn" onclick="increaseQty(event, ${index})">+</button>
+                <button class="qty-btn" onclick="increaseQty(event, ${originalIndex})">+</button>
             </div>
         </li>
-    `).join('');
+    `;
+    }).join('');
 }
 
 // לחיצה ארוכה להוספת מחיר

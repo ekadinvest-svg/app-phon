@@ -28,7 +28,8 @@ function listenToEvents() {
             title: data.title,
             date: data.date,
             time: data.time || '',
-            type: data.type || 'event'
+            type: data.type || 'event',
+            owner: data.owner || ''
           });
         });
         renderCalendar();
@@ -128,7 +129,7 @@ function showDayDetails(dateStr) {
             </div>
             <ul class="day-events-list">
                 ${dayEvents.map(event => `
-                    <li>
+                    <li class="event-owner-${event.owner || 'none'}">
                         <span class="event-type">${eventIcons[event.type] || '📅'}</span>
                         <div class="event-info">
                             <div class="event-title">${event.title}</div>
@@ -200,7 +201,7 @@ function renderEventsList() {
         const timeFormatted = event.time || '';
         
         return `
-            <li>
+            <li class="event-owner-${event.owner || 'none'}">
                 <span class="event-type">${eventIcons[event.type] || '📅'}</span>
                 <div class="event-info">
                     <div class="event-title">${event.title}</div>
@@ -231,6 +232,7 @@ function closeEventModal() {
     document.getElementById('eventTitle').value = '';
     document.getElementById('eventTime').value = '';
     document.getElementById('eventType').value = 'event';
+    document.querySelector('input[name="eventOwner"][value=""]').checked = true;
 }
 
 function saveEvent() {
@@ -238,19 +240,21 @@ function saveEvent() {
     const title = document.getElementById('eventTitle').value.trim();
     const time = document.getElementById('eventTime').value;
     const type = document.getElementById('eventType').value;
+    const owner = document.querySelector('input[name="eventOwner"]:checked').value;
     
     if (!date || !title) {
         alert('נא למלא תאריך וכותרת');
         return;
     }
     
-    console.log('Saving event:', { date, title, time, type });
+    console.log('Saving event:', { date, title, time, type, owner });
     
     db.collection('events').add({
         date,
         title,
         time,
         type,
+        owner,
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
     }).then(() => {
         console.log('Event saved successfully');

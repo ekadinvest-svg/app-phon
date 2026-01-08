@@ -144,6 +144,23 @@
                         <option value="reminder">🔔 תזכורת</option>
                     </select>
                 </div>
+                <div class="form-group">
+                    <label>שייך ל:</label>
+                    <div class="owner-select">
+                        <label class="owner-option">
+                            <input type="radio" name="eventOwner" value="" checked />
+                            <span class="owner-label owner-none">כלם</span>
+                        </label>
+                        <label class="owner-option">
+                            <input type="radio" name="eventOwner" value="anna" />
+                            <span class="owner-label owner-anna">אנה</span>
+                        </label>
+                        <label class="owner-option">
+                            <input type="radio" name="eventOwner" value="elad" />
+                            <span class="owner-label owner-elad">אלעד</span>
+                        </label>
+                    </div>
+                </div>
                 <button class="btn" onclick="saveEvent()" style="width:100%;margin-top:15px;">שמור</button>
             </div>
         </div>
