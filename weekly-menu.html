@@ -6,11 +6,11 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#667eea">
-    <title>רשימת קניות</title>
+    <title>תפריט שבועי</title>
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon.png">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="shopping.css">
+    <link rel="stylesheet" href="weekly-menu.css">
 </head>
 <body>
     <!-- תפריט המבורגר -->
@@ -19,10 +19,10 @@
         <div class="bar"></div>
         <div class="bar"></div>
     </div>
-    
+
     <!-- כפתור סגירה -->
     <div class="close-page-btn" onclick="closePage()">✕</div>
-    
+
     <!-- תפריט צד -->
     <div id="sideMenu" class="side-menu">
         <div class="menu-header">
@@ -38,10 +38,10 @@
             <a href="#" onclick="openSettings(); return false;">⚙️ הגדרות</a>
         </div>
     </div>
-    
+
     <!-- רקע כהה -->
     <div id="menuOverlay" class="menu-overlay" onclick="toggleMenu()"></div>
-    
+
     <!-- מודל הגדרות -->
     <div id="settingsModal" class="modal">
         <div class="modal-content">
@@ -61,7 +61,7 @@
             </div>
         </div>
     </div>
-    
+
     <!-- מודל עזרה -->
     <div id="helpModal" class="modal">
         <div class="modal-content">
@@ -71,72 +71,75 @@
             </div>
             <div class="modal-body help-content">
                 <div class="help-section">
-                    <h3>🛒 רשימת קניות</h3>
+                    <h3>🍽️ תפריט שבועי</h3>
                     <ul>
-                        <li><strong>הוספת מוצר:</strong> הקלד שם מוצר ולחץ "הוסף"</li>
-                        <li><strong>הצעות אוטומטיות:</strong> המערכת זוכרת מוצרים קודמים ומציעה אותם</li>
-                        <li><strong>סימון ביצוע:</strong> לחץ על שם המוצר לסימון V</li>
-                        <li><strong>שינוי כמות:</strong> השתמש בכפתורי + ו-</li>
-                        <li><strong>הוספת מחיר:</strong> לחיצה ארוכה על מוצר (או קליק ימני) מאפשרת להזין מחיר</li>
-                    </ul>
-                </div>
-                <div class="help-section">
-                    <h3>🏢 דירה</h3>
-                    <ul>
-                        <li><strong>מעקב הוצאות:</strong> הוסף הוצאות דירה עם שם וסכום</li>
-                        <li><strong>מחיקה:</strong> לחץ על כפתור המחיקה להסרת הוצאה</li>
-                    </ul>
-                </div>
-                <div class="help-section">
-                    <h3>📅 לוח שנה</h3>
-                    <ul>
-                        <li><strong>צפייה באירועים:</strong> לחץ על תאריך לראות את האירועים שלו</li>
-                        <li><strong>הוספת אירוע:</strong> לחץ "הוסף אירוע" בתוך פרטי היום</li>
-                        <li><strong>סוגי אירועים:</strong> ניתן לבחור אירוע, משימה או תזכורת</li>
-                        <li><strong>ניווט:</strong> חיצים לניווט בין חודשים</li>
-                    </ul>
-                </div>
-                <div class="help-section">
-                    <h3>🎉 ניהול אירועים</h3>
-                    <ul>
-                        <li><strong>הוספת אירוע:</strong> לחץ על + בתחתית המסך ובחר 🎉</li>
-                        <li><strong>מחיקת אירוע:</strong> לחץ על + ובחר 🗑️</li>
-                        <li><strong>💰 הוצאות:</strong> מעקב אחר כל הוצאות האירוע עם סיכום</li>
-                        <li><strong>👥 ספקים:</strong> רשימת ספקים עם שם ותפקיד</li>
-                        <li><strong>💡 רעיונות:</strong> רשימת רעיונות לאירוע עם סימון ביצוע</li>
-                        <li><strong>⏰ ספירה לאחור:</strong> הגדר תאריך וצפה בספירה לאחור בזמן אמת</li>
+                        <li><strong>בחירת שבוע:</strong> בחר תאריך התחלת שבוע או עבור שבוע קדימה/אחורה</li>
+                        <li><strong>הוספת מנה:</strong> בחר יום, כתוב מה אוכלים והוסף מצרכים</li>
+                        <li><strong>מצרכים:</strong> כתוב כל מצרך בשורה נפרדת</li>
+                        <li><strong>הוספה לקניות:</strong> בלחיצה על כפתור, המצרכים עוברים לרשימת קניות</li>
                     </ul>
                 </div>
                 <div class="help-section">
                     <h3>🔄 סנכרון</h3>
                     <ul>
                         <li>כל הנתונים מסונכרנים בזמן אמת בין כל המכשירים</li>
-                        <li>שינויים שתעשה יופיעו מיד אצל בת/בן הזוג</li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
-    
-    <div class="container">
-        <h1>🛒 רשימת קניות</h1>
-        
-        <div class="add-item">
-            <input type="text" id="itemInput" placeholder="הוסף מוצר לרשימה..." autocomplete="off" />
-            <button id="addBtn" class="btn">הוסף</button>
-            <div id="suggestions" class="suggestions"></div>
+
+    <div class="container weekly-container">
+        <h1>🍽️ תפריט שבועי</h1>
+
+        <div class="weekly-card week-selector-card">
+            <h3>בחירת שבוע</h3>
+            <div class="week-selector-row">
+                <button class="btn btn-week-nav" id="prevWeekBtn">⟵ שבוע קודם</button>
+                <div class="week-date-wrap">
+                    <label for="weekStartDate">תאריך תחילת השבוע</label>
+                    <input id="weekStartDate" type="date" />
+                </div>
+                <button class="btn btn-week-nav" id="nextWeekBtn">שבוע הבא ⟶</button>
+            </div>
         </div>
-        
-        <ul id="shoppingList" class="shopping-list">
-            <!-- הפריטים יופיעו כאן -->
-        </ul>
-        <button id="clearListBtn" class="btn btn-danger" style="margin-bottom:15px;width:100%;">🧹 רוקן רשימה</button>
+
+        <div class="weekly-card">
+            <h3>הוספת ארוחה</h3>
+            <div class="weekly-form-grid">
+                <div class="form-group">
+                    <label for="daySelect">יום</label>
+                    <select id="daySelect">
+                        <option value="sun">ראשון</option>
+                        <option value="mon">שני</option>
+                        <option value="tue">שלישי</option>
+                        <option value="wed">רביעי</option>
+                        <option value="thu">חמישי</option>
+                        <option value="fri">שישי</option>
+                        <option value="sat">שבת</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="mealName">מה אוכלים?</label>
+                    <input id="mealName" type="text" placeholder="למשל: סלמון ותפוחי אדמה" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="ingredients">מצרכים (שורה לכל מצרך)</label>
+                <textarea id="ingredients" rows="4" placeholder="סלמון&#10;תפוחי אדמה&#10;שמן זית"></textarea>
+            </div>
+
+            <button class="btn" id="addMealBtn">➕ הוסף לתפריט השבועי</button>
+        </div>
+
+        <div id="daysWrap" class="days-wrap"></div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <script src="firebase.js"></script>
-    <script src="shopping.js"></script>
     <script src="menu.js"></script>
+    <script src="weekly-menu.js"></script>
 </body>
 </html>

@@ -36,6 +36,7 @@ function addItem() {
         console.log('Adding item:', text);
         db.collection('shoppingList').add({
             text,
+            textLower: text.toLowerCase().trim(),
             qty: 1,
             completed: false,
             timestamp: firebase.firestore.FieldValue.serverTimestamp()

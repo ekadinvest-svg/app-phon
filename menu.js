@@ -64,6 +64,10 @@ function resetSystem() {
             db.collection('eventIdeas').get().then(snapshot => {
                 snapshot.forEach(doc => doc.ref.delete());
             });
+            // מחיקת תפריט שבועי
+            db.collection('weeklyMenu').get().then(snapshot => {
+                snapshot.forEach(doc => doc.ref.delete());
+            });
         }
         
         // הודעה למשתמש
